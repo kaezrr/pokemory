@@ -1,9 +1,16 @@
+function normalize(string = "") {
+  return string
+    .split("-")
+    .map((e) => e.charAt(0).toUpperCase() + e.slice(1))
+    .join(" ");
+}
+
 async function getRandomPokemon(id) {
   let response = await fetch("https://pokeapi.co/api/v2/pokemon/" + id);
   let data = await response.json();
   return {
     id,
-    name: data.name,
+    name: normalize(data.name),
     img: data.sprites.other["official-artwork"].front_default,
   };
 }
