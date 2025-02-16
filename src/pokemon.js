@@ -1,12 +1,17 @@
-async function getRandomPokemon() {
-  const randID = () => Math.floor(Math.random() * 1025) + 1;
-  let response = await fetch("https://pokeapi.co/api/v2/pokemon/" + randID());
+async function getRandomPokemon(id) {
+  let response = await fetch("https://pokeapi.co/api/v2/pokemon/" + id);
   let data = await response.json();
-  return data.name;
+  return {
+    name: data.name,
+    img: data.sprites.other["official-artwork"].front_default,
+  };
 }
 
 async function getPokemonList(length = 15) {
-  return Promise.all(Array.from({ length }, getRandomPokemon));
+  const randID = () => Math.floor(Math.random() * 1025) + 1;
+  const pokemonIDs = new Set();
+  while (pokemonIDs.size < length) pokemonIDs.add(randID());
+  return Promise.all([...pokemonIDs].map(getRandomPokemon));
 }
 
-export default getPokemonList;
+console.log(await getPokemonList());
