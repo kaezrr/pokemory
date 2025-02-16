@@ -15,4 +15,11 @@ async function getPokemonList(length = 15) {
   return Promise.all([...pokemonIDs].map(getRandomPokemon));
 }
 
+export function shuffle(array) {
+  return array
+    .map((value) => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value);
+}
+
 export default getPokemonList;
